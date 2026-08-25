@@ -38,10 +38,6 @@ public class AIService {
         this.restTemplate = new RestTemplate(factory);
     }
 
-    void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
     public String generateResponse(String prompt) {
         try {
             return generateResponseViaChat2Api(prompt);
@@ -116,7 +112,6 @@ public class AIService {
         }
     }
 
-    // NEW
     public String generateValidExercise(String muscleGroup, String difficulty, String equipment, int maxRetries) {
         log.info("Generating valid exercise - muscleGroup: {}, difficulty: {}, equipment: {}, maxRetries: {}", muscleGroup, difficulty, equipment, maxRetries);
         int attempts = 0;
@@ -332,6 +327,15 @@ public class AIService {
             }
 
             return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isChat2ApiAvailable() {
+        try {
+            restTemplate.getForEntity(chat2apiBaseUrl + "/v1/models", String.class);
+            return true;
         } catch (Exception e) {
             return false;
         }

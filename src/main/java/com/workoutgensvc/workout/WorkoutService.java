@@ -3,7 +3,6 @@ package com.workoutgensvc.workout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.workoutgensvc.core.AIService;
-import com.workoutgensvc.exercise.ExerciseService;
 import com.workoutgensvc.user.User;
 import com.workoutgensvc.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +18,13 @@ import java.util.*;
 public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final UserService userService;
-    private final ExerciseService exerciseService;
     private final AIService aiService;
     private final Gson gson;
 
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository, UserService userService, ExerciseService exerciseService, AIService aiService, Gson gson) {
+    public WorkoutService(WorkoutRepository workoutRepository, UserService userService, AIService aiService, Gson gson) {
         this.workoutRepository = workoutRepository;
         this.userService = userService;
-        this.exerciseService = exerciseService;
         this.aiService = aiService;
         this.gson = gson;
     }

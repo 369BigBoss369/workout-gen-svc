@@ -1,5 +1,6 @@
 package com.workoutgensvc.rest;
 
+import com.workoutgensvc.core.AIService;
 import com.workoutgensvc.exercise.ExerciseService;
 import com.workoutgensvc.plan.PlanService;
 import com.workoutgensvc.workout.WorkoutService;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -23,13 +21,22 @@ public class AppRestController {
     private final ExerciseService exerciseService;
     private final WorkoutService workoutService;
     private final PlanService planService;
+    private final AIService aiService;
 
     @Autowired
-    public AppRestController(ExerciseService exerciseService, WorkoutService workoutService, PlanService planService) {
+    public AppRestController(ExerciseService exerciseService, WorkoutService workoutService, PlanService planService, AIService aiService) {
         this.exerciseService = exerciseService;
         this.workoutService = workoutService;
         this.planService = planService;
+        this.aiService = aiService;
     }
+
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Boolean>> getStatus() {
+        boolean available = aiService.isChat2ApiAvailable();
+        return ResponseEntity.ok(Map.of("available", available));
+    }
+
 
     @PostMapping("/exercises")
     public ResponseEntity<?> generateExercise(@RequestParam String muscleGroup, @RequestParam String difficulty, @RequestParam String equipment, @RequestParam String userId) {
